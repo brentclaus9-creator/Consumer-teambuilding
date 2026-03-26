@@ -2,69 +2,106 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teambuilding Bingo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Mobile Vikings Bingo</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: system-ui, sans-serif; background: #f5f4f0; color: #1a1a1a; min-height: 100vh; }
+body { font-family: system-ui, sans-serif; background: #f0f0f0; color: #1a1a1a; min-height: 100vh; }
 .screen { display: none; }
 .screen.active { display: block; }
-.center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 32px 20px; gap: 20px; }
-.card { background: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 380px; border: 1px solid #e0ded8; display: flex; flex-direction: column; gap: 18px; }
-label { display: block; font-size: 13px; font-weight: 500; color: #666; margin-bottom: 6px; }
-input[type=text] { width: 100%; padding: 11px 13px; border-radius: 9px; border: 1px solid #d3d1c7; font-size: 15px; outline: none; background: #fafaf8; }
-input:focus { border-color: #534ab7; }
-.btn { padding: 13px 0; border-radius: 10px; border: none; font-weight: 600; font-size: 15px; cursor: pointer; width: 100%; }
-.btn-green { background: #1d9e75; color: #fff; }
-.btn-green:disabled { background: #ccc; color: #999; cursor: default; }
+
+/* MV Colors */
+:root {
+  --mv-red: #e4002b;
+  --mv-dark: #1a1a1a;
+  --mv-light: #fff;
+  --mv-gray: #f0f0f0;
+  --mv-border: #ddd;
+}
+
+.header-bar { background: var(--mv-red); color: #fff; padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+.header-bar .logo { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+.header-bar .logo span { font-weight: 300; }
+
+.center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 60px); padding: 24px 20px; gap: 20px; }
+
+.welcome-box { background: var(--mv-red); color: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 420px; text-align: center; }
+.welcome-box h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+.welcome-box p { font-size: 14px; opacity: .9; line-height: 1.6; }
+
+.card { background: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 420px; border: 1px solid var(--mv-border); display: flex; flex-direction: column; gap: 16px; }
+label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 6px; }
+input[type=text], textarea { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--mv-border); font-size: 15px; outline: none; background: #fafafa; font-family: inherit; }
+input:focus, textarea:focus { border-color: var(--mv-red); }
+.btn { padding: 14px 0; border-radius: 10px; border: none; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; }
+.btn-red { background: var(--mv-red); color: #fff; }
+.btn-red:disabled { background: #ccc; color: #999; cursor: default; }
+.btn-gray { background: #eee; color: #555; }
 .members-row { display: flex; gap: 8px; }
 .members-row input { flex: 1; }
-.members-row button { padding: 11px 16px; border-radius: 9px; border: none; background: #534ab7; color: #fff; font-size: 15px; cursor: pointer; }
+.members-row button { padding: 12px 16px; border-radius: 10px; border: none; background: var(--mv-red); color: #fff; font-size: 18px; font-weight: 700; cursor: pointer; }
 .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
-.tag { display: inline-flex; align-items: center; gap: 5px; background: #fafaf8; border: 1px solid #d3d1c7; border-radius: 20px; padding: 4px 12px; font-size: 13px; }
-.tag button { background: none; border: none; cursor: pointer; color: #888; font-size: 14px; line-height: 1; }
-#bingo-screen { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
-.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; }
-.cell { background: #f8f7f4; border: 1.5px solid #d3d1c7; color: #444; border-radius: 8px; padding: 10px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 90px; font-size: 11px; line-height: 1.4; user-select: none; }
+.tag { display: inline-flex; align-items: center; gap: 5px; background: #fef0f3; border: 1px solid #f7b3c0; border-radius: 20px; padding: 4px 12px; font-size: 13px; color: #a0001f; }
+.tag button { background: none; border: none; cursor: pointer; color: #c00; font-size: 14px; line-height: 1; }
+
+/* Bingo screen */
+#bingo-screen { padding-bottom: 40px; }
+.bingo-header { background: var(--mv-red); color: #fff; padding: 16px 20px 20px; }
+.bingo-header h2 { font-size: 18px; font-weight: 800; }
+.bingo-header .sub { font-size: 13px; opacity: .85; margin-top: 3px; }
+.bingo-header .members { font-size: 12px; opacity: .75; margin-top: 2px; }
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 12px; }
+.cell { background: #fff; border: 1.5px solid #ddd; color: #444; border-radius: 8px; padding: 8px 6px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 85px; font-size: 10px; line-height: 1.4; user-select: none; transition: transform .1s; }
+.cell:active { transform: scale(.97); }
 .cell.submitted { background: #faeeda; border-color: #ef9f27; color: #633806; }
 .cell.approved { background: #eaf3de; border-color: #639922; color: #27500a; cursor: default; }
-.cell.rejected { background: #fcebeb; border-color: #e24b4a; color: #501313; }
-.cell .icon { font-size: 16px; margin-bottom: 4px; }
-.legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.legend span { font-size: 11px; border-radius: 20px; padding: 2px 10px; border: 1px solid; }
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+.cell.rejected { background: #fef0f3; border-color: var(--mv-red); color: #a0001f; }
+.cell .icon { font-size: 14px; margin-bottom: 3px; }
+.cell .reject-comment { font-size: 9px; margin-top: 4px; font-style: italic; opacity: .8; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 8px; }
+.legend span { font-size: 10px; border-radius: 20px; padding: 2px 8px; border: 1px solid; }
+
+/* Modal */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); display: none; align-items: flex-end; justify-content: center; z-index: 100; }
 .overlay.open { display: flex; }
-.modal { background: #fff; border-radius: 20px; padding: 28px; width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; box-shadow: 0 32px 80px rgba(0,0,0,0.6); }
+.modal { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 24px 36px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; box-shadow: 0 -8px 40px rgba(0,0,0,0.3); }
+.modal-handle { width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 20px; }
 .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
-.modal-header h3 { font-size: 17px; font-weight: 600; color: #1a1a1a; margin: 0; }
-.close-btn { background: #f0efeb; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 16px; color: #444; }
-.task-box { background: #f5f4f0; border-radius: 10px; padding: 12px 14px; margin-bottom: 18px; font-size: 13px; color: #333; line-height: 1.55; font-weight: 500; }
-.upload-area { display: flex; flex-direction: column; align-items: center; gap: 8px; border: 2px dashed #ccc; border-radius: 12px; padding: 36px 16px; text-align: center; cursor: pointer; margin-bottom: 16px; background: #fafaf8; }
-.upload-area .big { font-size: 36px; }
-.upload-area .title { font-size: 14px; font-weight: 500; color: #333; }
-.upload-area .sub { font-size: 12px; color: #888; }
-#preview-img { max-width: 100%; max-height: 220px; border-radius: 10px; object-fit: cover; border: 2px solid #e0efe0; display: none; margin-bottom: 16px; }
+.modal-header h3 { font-size: 17px; font-weight: 700; color: #1a1a1a; margin: 0; }
+.close-btn { background: #f0f0f0; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 16px; color: #444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.task-box { background: #fef0f3; border-left: 3px solid var(--mv-red); border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; color: #333; line-height: 1.55; font-weight: 600; }
+.upload-zone { display: flex; flex-direction: column; align-items: center; gap: 10px; border: 2px dashed #ddd; border-radius: 12px; padding: 32px 16px; text-align: center; cursor: pointer; margin-bottom: 16px; background: #fafafa; -webkit-tap-highlight-color: transparent; }
+.upload-zone .big { font-size: 40px; }
+.upload-zone .title { font-size: 15px; font-weight: 600; color: #333; }
+.upload-zone .sub { font-size: 12px; color: #888; }
+#preview-img { max-width: 100%; max-height: 240px; border-radius: 10px; object-fit: cover; border: 2px solid #e0efe0; display: none; margin-bottom: 16px; width: 100%; }
 .modal-btns { display: flex; gap: 10px; }
-.modal-btns button { flex: 1; padding: 12px 0; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; }
-.btn-cancel { border: 1.5px solid #ddd !important; background: #fff; color: #555; }
-.btn-retry { flex: 0 !important; padding: 12px 14px !important; border: 1.5px solid #ddd !important; background: #fff; color: #555; display: none; }
-#toast-container { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; align-items: center; z-index: 999; pointer-events: none; }
-.toast { color: #fff; border-radius: 50px; padding: 10px 20px; font-size: 14px; font-weight: 500; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.25); animation: toastIn .2s ease; }
+.modal-btns .btn { padding: 14px 0; font-size: 14px; }
+.btn-outline { background: #fff; border: 1.5px solid #ddd !important; color: #555; border-radius: 10px; padding: 14px 16px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+
+/* Rejected notice */
+.rejected-notice { background: #fef0f3; border: 1px solid #f7b3c0; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; color: #a0001f; line-height: 1.5; }
+
+#toast-container { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; align-items: center; z-index: 999; pointer-events: none; width: 90%; }
+.toast { color: #fff; border-radius: 50px; padding: 12px 20px; font-size: 14px; font-weight: 600; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.25); animation: toastIn .2s ease; }
 .toast.success { background: #1d9e75; }
 .toast.info { background: #534ab7; }
-.toast.error { background: #e24b4a; }
+.toast.error { background: var(--mv-red); }
 @keyframes toastIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 </style>
 </head>
 <body>
 <div id="toast-container"></div>
 
+<!-- Register -->
 <div id="register-screen" class="screen active">
+  <div class="header-bar">
+    <div class="logo">Mobile<span>Vikings</span></div>
+  </div>
   <div class="center">
-    <div style="text-align:center">
-      <div style="font-size:40px;margin-bottom:8px">&#127919;</div>
-      <h1 style="font-size:26px;font-weight:500">Teambuilding Bingo</h1>
-      <p style="margin-top:8px;color:#666;font-size:14px">Registreer jullie team om te starten</p>
+    <div class="welcome-box">
+      <h2>&#127919; Teambuilding Bingo!</h2>
+      <p>Welkom bij de Mobile Vikings teambuilding! Werk samen, voltooi opdrachten en maak er een onvergetelijke dag van. Registreer hieronder jullie team om te starten.</p>
     </div>
     <div class="card">
       <div>
@@ -79,42 +116,59 @@ input:focus { border-color: #534ab7; }
         </div>
         <div class="tags" id="members-tags"></div>
       </div>
-      <button class="btn btn-green" id="start-btn" onclick="registerTeam()">Start de bingo &#8594;</button>
+      <button class="btn btn-red" id="start-btn" onclick="registerTeam()">Start de bingo &#8594;</button>
     </div>
   </div>
 </div>
 
+<!-- Bingo -->
 <div id="bingo-screen" class="screen">
-  <h2 id="team-title" style="font-size:18px;font-weight:500">&#127919; Team</h2>
-  <p id="members-display" style="font-size:12px;color:#888;margin-top:3px"></p>
-  <p id="score-display" style="font-size:13px;color:#666;margin-top:3px">0/16 goedgekeurd</p>
+  <div class="bingo-header">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="logo" style="font-size:18px;font-weight:800">Mobile<span style="font-weight:300">Vikings</span></div>
+      <button onclick="showLogin()" style="background:rgba(255,255,255,0.2);border:none;color:#fff;padding:6px 12px;border-radius:20px;font-size:12px;cursor:pointer">&#128274; Mod</button>
+    </div>
+    <h2 id="team-title" style="margin-top:10px">Team</h2>
+    <p class="members" id="members-display"></p>
+    <p class="sub" id="score-display">0/16 goedgekeurd</p>
+  </div>
   <div class="legend">
-    <span style="background:#f8f7f4;border-color:#d3d1c7;color:#444">Niet gedaan</span>
-    <span style="background:#faeeda;border-color:#ef9f27;color:#633806">Wacht op goedkeuring</span>
+    <span style="background:#fff;border-color:#ddd;color:#444">Niet gedaan</span>
+    <span style="background:#faeeda;border-color:#ef9f27;color:#633806">In behandeling</span>
     <span style="background:#eaf3de;border-color:#639922;color:#27500a">Goedgekeurd &#10003;</span>
-    <span style="background:#fcebeb;border-color:#e24b4a;color:#501313">Afgekeurd &#10007;</span>
+    <span style="background:#fef0f3;border-color:#e4002b;color:#a0001f">Afgekeurd &#10007;</span>
   </div>
   <div class="grid" id="bingo-grid"></div>
 </div>
 
+<!-- Upload modal -->
 <div class="overlay" id="upload-overlay">
   <div class="modal">
+    <div class="modal-handle"></div>
     <div class="modal-header">
       <h3>&#128247; Bewijs uploaden</h3>
       <button class="close-btn" onclick="closeModal()">&#10005;</button>
     </div>
     <div class="task-box" id="modal-task-text"></div>
-    <label class="upload-area" id="upload-area" for="file-input">
+    <div class="rejected-notice" id="rejected-notice" style="display:none"></div>
+
+    <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
       <span class="big">&#128247;</span>
-      <span class="title">Tik om een foto te kiezen</span>
+      <span class="title">Tik hier om een foto te kiezen</span>
       <span class="sub">of maak een nieuwe foto</span>
-    </label>
-    <input type="file" id="file-input" accept="image/*" capture="environment" style="display:none">
+    </div>
+    <input type="file" id="file-input" accept="image/*" style="display:none">
     <img id="preview-img" alt="preview">
+
+    <div style="margin-bottom:16px">
+      <label>Opmerking <span style="font-weight:400;color:#aaa">(optioneel)</span></label>
+      <textarea id="submit-comment" rows="2" placeholder="Voeg een korte toelichting toe..."></textarea>
+    </div>
+
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal()">Annuleren</button>
-      <button class="btn-retry" id="retry-btn" onclick="retryPhoto()">Opnieuw</button>
-      <button class="btn btn-green" id="submit-btn" onclick="submitPhoto()" disabled>Insturen &#8594;</button>
+      <button class="btn-outline" onclick="closeModal()">Annuleren</button>
+      <button class="btn-outline" id="retry-btn" onclick="retryPhoto()" style="display:none">Opnieuw</button>
+      <button class="btn btn-red" id="submit-btn" onclick="submitPhoto()" disabled>Insturen &#8594;</button>
     </div>
   </div>
 </div>
@@ -147,27 +201,36 @@ var submissions = [];
 var selectedTask = null;
 var photoDataUrl = null;
 
+// Persist team session
+function saveSession() { try { localStorage.setItem("mv_team", JSON.stringify({ teamName: teamName, members: members })); } catch(e) {} }
+function loadSession() { try { var s = localStorage.getItem("mv_team"); if (s) { var d = JSON.parse(s); return d; } } catch(e) {} return null; }
+
+window.addEventListener("load", function() {
+  var s = loadSession();
+  if (s && s.teamName) {
+    teamName = s.teamName;
+    members = s.members || [];
+    showScreen("bingo-screen");
+    document.getElementById("team-title").textContent = "Team: " + teamName;
+    document.getElementById("members-display").textContent = members.length ? members.join(" \u00b7 ") : "";
+    loadSubmissions().then(renderGrid);
+    setInterval(function() { loadSubmissions().then(renderGrid); }, 6000);
+  }
+});
+
 function sb(path, options) {
   options = options || {};
   return fetch(SUPABASE_URL + "/rest/v1/" + path, {
     method: options.method || "GET",
-    headers: {
-      "apikey": SUPABASE_KEY,
-      "Authorization": "Bearer " + SUPABASE_KEY,
-      "Content-Type": "application/json",
-      "Prefer": options.prefer || ""
-    },
+    headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Content-Type": "application/json", "Prefer": options.prefer || "" },
     body: options.body || undefined
-  }).then(function(res) {
-    if (res.status === 204 || res.status === 201) return null;
-    return res.json();
-  });
+  }).then(function(res) { if (res.status === 204 || res.status === 201) return null; return res.json(); });
 }
 
-function toast(msg, type, icon) {
+function toast(msg, type) {
   var el = document.createElement("div");
   el.className = "toast " + (type || "success");
-  el.textContent = (icon ? icon + " " : "") + msg;
+  el.textContent = msg;
   document.getElementById("toast-container").appendChild(el);
   setTimeout(function() { el.remove(); }, 3500);
 }
@@ -177,8 +240,14 @@ function showScreen(id) {
   document.getElementById(id).classList.add("active");
 }
 
-document.getElementById("member-input").addEventListener("keydown", function(e) { if (e.key === "Enter") addMember(); });
-document.getElementById("team-name-input").addEventListener("keydown", function(e) { if (e.key === "Enter") registerTeam(); });
+function showLogin() {
+  var code = prompt("Moderatorcode:");
+  if (code === "1234") { window.location.href = "moderator.html"; }
+  else if (code !== null) { toast("Onjuiste code", "error"); }
+}
+
+document.getElementById("member-input").addEventListener("keydown", function(e) { if (e.key === "Enter") { e.preventDefault(); addMember(); } });
+document.getElementById("team-name-input").addEventListener("keydown", function(e) { if (e.key === "Enter") { e.preventDefault(); registerTeam(); } });
 document.getElementById("file-input").addEventListener("change", onFileSelected);
 document.getElementById("upload-overlay").addEventListener("click", function(e) { if (e.target === this) closeModal(); });
 
@@ -197,51 +266,41 @@ function renderTags() {
   }).join("");
 }
 
-function removeMember(name) {
-  members = members.filter(function(m) { return m !== name; });
-  renderTags();
-}
+function removeMember(name) { members = members.filter(function(m) { return m !== name; }); renderTags(); }
 
 function registerTeam() {
   var name = document.getElementById("team-name-input").value.trim();
   if (!name) return;
   teamName = name;
+  saveSession();
   showScreen("bingo-screen");
-  document.getElementById("team-title").textContent = "&#127919; Team: " + teamName;
-  document.getElementById("members-display").textContent = members.length ? members.join(" · ") : "";
-  toast("Welkom, team " + teamName + "!", "success");
-  sb("teams", {
-    method: "POST",
-    prefer: "resolution=ignore-duplicates",
-    body: JSON.stringify({ name: teamName, members: members })
-  }).catch(function() {});
-  loadSubmissions().then(function() {
-    renderGrid();
-    setInterval(function() { loadSubmissions().then(renderGrid); }, 6000);
-  });
+  document.getElementById("team-title").textContent = "Team: " + teamName;
+  document.getElementById("members-display").textContent = members.length ? members.join(" \u00b7 ") : "";
+  toast("Welkom, team " + teamName + "! \uD83C\uDF89");
+  sb("teams", { method: "POST", prefer: "resolution=ignore-duplicates", body: JSON.stringify({ name: teamName, members: members }) }).catch(function() {});
+  loadSubmissions().then(function() { renderGrid(); setInterval(function() { loadSubmissions().then(renderGrid); }, 6000); });
 }
 
 function loadSubmissions() {
-  return sb("submissions?team_name=eq." + encodeURIComponent(teamName) + "&select=task_idx,status", { method: "GET" })
-    .then(function(data) { submissions = data || []; })
-    .catch(function() {});
+  return sb("submissions?team_name=eq." + encodeURIComponent(teamName) + "&select=task_idx,status,reject_comment", { method: "GET" })
+    .then(function(data) { submissions = data || []; }).catch(function() {});
 }
 
-function getStatus(idx) {
-  var s = submissions.find(function(s) { return s.task_idx === idx; });
-  return s ? s.status : "pending";
-}
+function getStatus(idx) { var s = submissions.find(function(s) { return s.task_idx === idx; }); return s ? s.status : "pending"; }
+function getRejectComment(idx) { var s = submissions.find(function(s) { return s.task_idx === idx; }); return s ? s.reject_comment || "" : ""; }
 
 function renderGrid() {
   var grid = document.getElementById("bingo-grid");
   grid.innerHTML = TASKS.map(function(t, i) {
     var s = getStatus(i);
+    var rc = getRejectComment(i);
     var icon = s === "approved" ? '<span class="icon">&#10003;</span>' : s === "submitted" ? '<span class="icon">&#9203;</span>' : s === "rejected" ? '<span class="icon">&#10007;</span>' : "";
+    var comment = (s === "rejected" && rc) ? '<span class="reject-comment">"' + rc + '"</span>' : "";
     var click = s !== "approved" ? 'onclick="openModal(' + i + ')"' : "";
-    return '<div class="cell ' + s + '" ' + click + '>' + icon + '<span>' + t + '</span></div>';
+    return '<div class="cell ' + s + '" ' + click + '>' + icon + '<span>' + t + '</span>' + comment + '</div>';
   }).join("");
   var approved = TASKS.reduce(function(n, _, i) { return n + (getStatus(i) === "approved" ? 1 : 0); }, 0);
-  document.getElementById("score-display").textContent = approved + "/16 goedgekeurd" + (checkBingo() ? " &#127881; BINGO!" : "");
+  document.getElementById("score-display").textContent = approved + "/16 goedgekeurd" + (checkBingo() ? " \uD83C\uDF89 BINGO!" : "");
 }
 
 function checkBingo() {
@@ -258,22 +317,24 @@ function openModal(idx) {
   photoDataUrl = null;
   document.getElementById("modal-task-text").textContent = TASKS[idx];
   document.getElementById("preview-img").style.display = "none";
-  document.getElementById("upload-area").style.display = "flex";
+  document.getElementById("upload-zone").style.display = "flex";
   document.getElementById("retry-btn").style.display = "none";
   document.getElementById("submit-btn").disabled = true;
   document.getElementById("submit-btn").textContent = "Insturen \u2192";
+  document.getElementById("submit-comment").value = "";
+  var rc = getRejectComment(idx);
+  var notice = document.getElementById("rejected-notice");
+  if (getStatus(idx) === "rejected" && rc) { notice.textContent = "\uD83D\uDCAC Feedback moderator: \"" + rc + "\""; notice.style.display = "block"; }
+  else { notice.style.display = "none"; }
   document.getElementById("upload-overlay").classList.add("open");
 }
 
-function closeModal() {
-  document.getElementById("upload-overlay").classList.remove("open");
-  document.getElementById("file-input").value = "";
-}
+function closeModal() { document.getElementById("upload-overlay").classList.remove("open"); document.getElementById("file-input").value = ""; }
 
 function retryPhoto() {
   photoDataUrl = null;
   document.getElementById("preview-img").style.display = "none";
-  document.getElementById("upload-area").style.display = "flex";
+  document.getElementById("upload-zone").style.display = "flex";
   document.getElementById("retry-btn").style.display = "none";
   document.getElementById("submit-btn").disabled = true;
   document.getElementById("file-input").value = "";
@@ -284,15 +345,15 @@ function onFileSelected(e) {
   if (!file) return;
   var reader = new FileReader();
   reader.onload = function(ev) {
-    resizeImage(ev.target.result, 600).then(function(resized) {
+    resizeImage(ev.target.result, 800).then(function(resized) {
       photoDataUrl = resized;
       var img = document.getElementById("preview-img");
       img.src = resized;
       img.style.display = "block";
-      document.getElementById("upload-area").style.display = "none";
+      document.getElementById("upload-zone").style.display = "none";
       document.getElementById("retry-btn").style.display = "inline-block";
       document.getElementById("submit-btn").disabled = false;
-      toast("Foto geselecteerd", "success");
+      toast("Foto geselecteerd!");
     });
   };
   reader.readAsDataURL(file);
@@ -304,10 +365,9 @@ function resizeImage(dataUrl, maxW) {
     img.onload = function() {
       var scale = Math.min(1, maxW / img.width);
       var c = document.createElement("canvas");
-      c.width = Math.round(img.width * scale);
-      c.height = Math.round(img.height * scale);
+      c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
       c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-      resolve(c.toDataURL("image/jpeg", 0.5));
+      resolve(c.toDataURL("image/jpeg", 0.6));
     };
     img.onerror = function() { resolve(dataUrl); };
     img.src = dataUrl;
@@ -317,23 +377,14 @@ function resizeImage(dataUrl, maxW) {
 function submitPhoto() {
   if (!photoDataUrl || selectedTask === null) return;
   var btn = document.getElementById("submit-btn");
-  btn.disabled = true;
-  btn.textContent = "Bezig...";
+  btn.disabled = true; btn.textContent = "Bezig...";
+  var comment = document.getElementById("submit-comment").value.trim();
   sb("submissions", {
-    method: "POST",
-    prefer: "resolution=merge-duplicates",
-    body: JSON.stringify({ team_name: teamName, task_idx: selectedTask, status: "submitted", photo_url: photoDataUrl })
-  }).then(function() {
-    return loadSubmissions();
-  }).then(function() {
-    renderGrid();
-    closeModal();
-    toast("Foto ingestuurd! Wacht op goedkeuring.", "info");
-  }).catch(function() {
-    toast("Er ging iets mis, probeer opnieuw.", "error");
-    btn.disabled = false;
-    btn.textContent = "Insturen \u2192";
-  });
+    method: "POST", prefer: "resolution=merge-duplicates",
+    body: JSON.stringify({ team_name: teamName, task_idx: selectedTask, status: "submitted", photo_url: photoDataUrl, team_comment: comment, reject_comment: null })
+  }).then(function() { return loadSubmissions(); })
+  .then(function() { renderGrid(); closeModal(); toast("Foto ingestuurd! Wacht op goedkeuring.", "info"); })
+  .catch(function() { toast("Er ging iets mis, probeer opnieuw.", "error"); btn.disabled = false; btn.textContent = "Insturen \u2192"; });
 }
 </script>
 </body>
