@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bingo Moderator</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #f5f4f0; color: #1a1a1a; min-height: 100vh; }
+.screen { display: none; }
+.screen.active { display: block; }
+.center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 32px 20px; gap: 20px; }
+.login-card { background: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 360px; border: 1px solid #e0ded8; display: flex; flex-direction: column; gap: 12px; }
+input[type=password] { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid #d3d1c7; font-size: 15px; outline: none; background: #fafaf8; }
+input:focus { border-color: #534ab7; }
+.btn { padding: 13px 0; border-radius: 10px; border: none; font-weight: 600; font-size: 15px; cursor: pointer; width: 100%; }
+.btn-purple { background: #534ab7; color: #fff; }
+.btn-green { background: #1d9e75; color: #fff; }
+.btn-red { background: #e24b4a; color: #fff; }
+.error-text { color: #a32d2d; font-size: 13px; display: none; }
+#dashboard { padding: 20px 16px; max-width: 700px; margin: 0 auto; }
+.dash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.dash-header h2 { font-size: 18px; font-weight: 500; }
+.dash-stats { font-size: 13px; color: #666; margin-top: 3px; }
+.refresh-btn { padding: 8px 14px; border-radius: 8px; border: 1px solid #d3d1c7; background: none; color: #666; cursor: pointer; font-size: 13px; }
+h3 { font-size: 15px; font-weight: 500; margin-bottom: 12px; }
+.queue-item { background: #faeeda; border: 1px solid #ef9f27; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.queue-item img { width: 52px; height: 52px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+.queue-item .info { flex: 1; min-width: 0; }
+.queue-item .info .team { margin: 0; font-weight: 500; font-size: 13px; color: #633806; }
+.queue-item .info .task { font-size: 12px; color: #854f0b; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.bekijk-btn { padding: 8px 16px; border-radius: 8px; border: none; background: #534ab7; color: #fff; font-size: 13px; font-weight: 500; cursor: pointer; flex-shrink: 0; }
+.team-card { background: #fff; border: 1px solid #e0ded8; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+.team-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+.team-name { font-weight: 500; font-size: 15px; }
+.team-members { font-size: 12px; color: #888; margin-top: 3px; }
+.team-score { font-size: 13px; color: #666; flex-shrink: 0; margin-left: 12px; }
+.progress-bar { background: #e0ded8; border-radius: 4px; height: 6px; margin-bottom: 10px; overflow: hidden; }
+.progress-fill { height: 100%; background: #639922; border-radius: 4px; }
+.mini-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; }
+.mini-cell { height: 16px; border-radius: 3px; border: 1px solid; }
+.pending-btns { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.pending-btn { font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid #ef9f27; background: #faeeda; color: #633806; cursor: pointer; }
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+.overlay.open { display: flex; }
+.modal { background: #fff; border-radius: 20px; padding: 28px; width: 100%; max-width: 420px; box-shadow: 0 32px 80px rgba(0,0,0,0.6); }
+.modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.modal-header h3 { font-size: 17px; font-weight: 600; color: #1a1a1a; margin: 0; }
+.close-btn { background: #f0efeb; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 16px; color: #444; }
+.info-box { background: #f5f4f0; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; }
+.info-box .lbl { font-size: 12px; color: #666; }
+.info-box .val { font-size: 14px; font-weight: 600; color: #1a1a1a; margin-top: 2px; }
+.info-box .val2 { font-size: 14px; font-weight: 500; color: #1a1a1a; margin-top: 2px; line-height: 1.5; }
+.info-box .sub { font-size: 12px; color: #888; margin-top: 3px; }
+.modal-photo { width: 100%; max-height: 280px; object-fit: contain; border-radius: 10px; margin-bottom: 18px; border: 1px solid #e8e7e3; display: none; }
+.no-photo { text-align: center; padding: 16px 0; color: #aaa; font-size: 13px; margin-bottom: 16px; display: none; }
+.modal-btns { display: flex; gap: 10px; }
+.modal-btns button { flex: 1; padding: 13px 0; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; }
+#toast-container { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; align-items: center; z-index: 999; pointer-events: none; }
+.toast { color: #fff; border-radius: 50px; padding: 10px 20px; font-size: 14px; font-weight: 500; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.25); animation: toastIn .2s ease; }
+.toast.success { background: #1d9e75; }
+.toast.info { background: #534ab7; }
+.toast.error { background: #e24b4a; }
+@keyframes toastIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<div id="login-screen" class="screen active">
+  <div class="center">
+    <div style="text-align:center">
+      <div style="font-size:36px;margin-bottom:8px">&#128737;&#65039;</div>
+      <h1 style="font-size:22px;font-weight:500">Moderator-dashboard</h1>
+      <p style="margin-top:8px;color:#666;font-size:14px">Voer de toegangscode in</p>
+    </div>
+    <div class="login-card">
+      <input type="password" id="code-input" placeholder="Toegangscode...">
+      <p class="error-text" id="code-error">Onjuiste code</p>
+      <button class="btn btn-purple" id="login-btn">Inloggen &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<div id="dashboard-screen" class="screen">
+  <div id="dashboard">
+    <div class="dash-header">
+      <div>
+        <h2>&#128737;&#65039; Moderator-dashboard</h2>
+        <p class="dash-stats" id="dash-stats">Laden...</p>
+      </div>
+      <button class="refresh-btn" id="refresh-btn">&#8635; Vernieuwen</button>
+    </div>
+    <div id="queue-section" style="margin-bottom:24px;display:none">
+      <h3 style="color:#633806" id="queue-title">Wacht op beoordeling</h3>
+      <div id="queue-list"></div>
+    </div>
+    <h3>&#128202; Teamoverzicht</h3>
+    <div id="teams-list"><p style="color:#aaa;font-size:14px">Laden...</p></div>
+  </div>
+</div>
+
+<div class="overlay" id="review-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>&#128203; Beoordeling</h3>
+      <button class="close-btn" id="close-review-btn">&#10005;</button>
+    </div>
+    <div class="info-box">
+      <div class="lbl">Team</div>
+      <div class="val" id="review-team"></div>
+      <div class="sub" id="review-members"></div>
+    </div>
+    <div class="info-box" style="margin-bottom:16px">
+      <div class="lbl">Opdracht</div>
+      <div class="val2" id="review-task"></div>
+    </div>
+    <img id="review-photo" class="modal-photo" alt="bewijs">
+    <div class="no-photo" id="review-no-photo">Geen foto beschikbaar</div>
+    <div class="modal-btns">
+      <button class="btn-red" id="reject-btn">&#10007; Afkeuren</button>
+      <button class="btn-green" id="approve-btn">&#10003; Goedkeuren</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var SUPABASE_URL = "https://qlirvunlnxakbtbeeryu.supabase.co";
+var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaXJ2dW5sbnhha2J0YmVlcnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1Mjk5MzIsImV4cCI6MjA5MDEwNTkzMn0.BWW0mvcshycK1pfKupSqSrHcj5H144sZs9kAeOCKNEA";
+var MOD_CODE = "1234";
+var TASKS = [
+  "Maak een groepsselfie op een bijzondere plek",
+  "Vraag iemand buiten het team om een handtekening",
+  "Bouw iets met wat je bij je hebt",
+  "Doe een challenge samen en film het",
+  "Vind een voorwerp dat begint met elke letter van jullie teamnaam",
+  "Maak een menselijke piramide",
+  "Leer 5 woorden in een andere taal van een voorbijganger",
+  "Maak een foto met iemand in een grappig kostuum of hoed",
+  "Bedenk een teamlied en zing het",
+  "Maak een foto waarbij het team een letter vormt met jullie lichamen",
+  "Verzamel 5 handtekeningen van mensen die je niet kent",
+  "Maak een foto met een standbeeld of kunstwerk",
+  "Doe een goede daad en documenteer het",
+  "Maak een panoramafoto van het hele team",
+  "Vind en fotografeer iets blauw, rood en geel",
+  "Recreeer een beroemde foto met het team"
+];
+var STATUS_COLORS = {
+  pending:   { bg:"#f8f7f4", border:"#d3d1c7" },
+  submitted: { bg:"#faeeda", border:"#ef9f27" },
+  approved:  { bg:"#eaf3de", border:"#639922" },
+  rejected:  { bg:"#fcebeb", border:"#e24b4a" }
+};
+
+var teams = [];
+var submissions = [];
+var reviewData = null;
+var refreshTimer = null;
+
+function sb(path, options) {
+  options = options || {};
+  return fetch(SUPABASE_URL + "/rest/v1/" + path, {
+    method: options.method || "GET",
+    headers: {
+      "apikey": SUPABASE_KEY,
+      "Authorization": "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      "Prefer": options.prefer || ""
+    },
+    body: options.body || undefined
+  }).then(function(res) {
+    if (res.status === 204 || res.status === 201) return null;
+    return res.json();
+  });
+}
+
+function toast(msg, type, icon) {
+  var el = document.createElement("div");
+  el.className = "toast " + (type || "success");
+  el.textContent = (icon ? icon + " " : "") + msg;
+  document.getElementById("toast-container").appendChild(el);
+  setTimeout(function() { el.remove(); }, 3500);
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(function(s) { s.classList.remove("active"); });
+  document.getElementById(id).classList.add("active");
+}
+
+function login() {
+  var code = document.getElementById("code-input").value;
+  var err = document.getElementById("code-error");
+  if (code === MOD_CODE) {
+    err.style.display = "none";
+    showScreen("dashboard-screen");
+    toast("Welkom, moderator!", "info");
+    loadAll();
+    refreshTimer = setInterval(loadAll, 8000);
+  } else {
+    err.style.display = "block";
+  }
+}
+
+document.getElementById("login-btn").addEventListener("click", login);
+document.getElementById("code-input").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") login();
+});
+document.getElementById("refresh-btn").addEventListener("click", loadAll);
+document.getElementById("close-review-btn").addEventListener("click", closeReview);
+document.getElementById("reject-btn").addEventListener("click", function() { moderate("rejected"); });
+document.getElementById("approve-btn").addEventListener("click", function() { moderate("approved"); });
+
+document.getElementById("review-overlay").addEventListener("click", function(e) {
+  if (e.target === this) closeReview();
+});
+
+function loadAll() {
+  Promise.all([
+    sb("teams?select=name,members&order=created_at.asc"),
+    sb("submissions?select=team_name,task_idx,status,photo_url&order=created_at.asc")
+  ]).then(function(results) {
+    teams = results[0] || [];
+    submissions = results[1] || [];
+    render();
+  }).catch(function() {
+    toast("Laden mislukt", "error");
+  });
+}
+
+function getStatus(team, idx) {
+  var s = submissions.find(function(s) { return s.team_name === team && s.task_idx === idx; });
+  return s ? s.status : "pending";
+}
+
+function approvedCount(team) {
+  var n = 0;
+  for (var i = 0; i < TASKS.length; i++) {
+    if (getStatus(team, i) === "approved") n++;
+  }
+  return n;
+}
+
+function hasBingo(team) {
+  function a(i) { return getStatus(team, i) === "approved"; }
+  for (var r = 0; r < 4; r++) { if ([0,1,2,3].every(function(c) { return a(r*4+c); })) return true; }
+  for (var c = 0; c < 4; c++) { if ([0,1,2,3].every(function(r) { return a(r*4+c); })) return true; }
+  if ([0,1,2,3].every(function(i) { return a(i*5); })) return true;
+  if ([0,1,2,3].every(function(i) { return a(i*4+(3-i)); })) return true;
+  return false;
+}
+
+function render() {
+  var pending = submissions.filter(function(s) { return s.status === "submitted"; });
+  var totalApproved = teams.reduce(function(n, t) { return n + approvedCount(t.name); }, 0);
+  document.getElementById("dash-stats").textContent = teams.length + " teams \u00b7 " + totalApproved + " goedgekeurd \u00b7 " + pending.length + " wachtend";
+
+  var queueSection = document.getElementById("queue-section");
+  if (pending.length > 0) {
+    queueSection.style.display = "block";
+    document.getElementById("queue-title").textContent = "Wacht op beoordeling (" + pending.length + ")";
+    document.getElementById("queue-list").innerHTML = pending.map(function(s) {
+      return '<div class="queue-item">' +
+        (s.photo_url ? '<img src="' + s.photo_url + '" alt="">' : '') +
+        '<div class="info"><p class="team">Team: ' + s.team_name + '</p><span class="task">' + TASKS[s.task_idx] + '</span></div>' +
+        '<button class="bekijk-btn" onclick="openReview(\'' + s.team_name.replace(/'/g, "\\'") + '\',' + s.task_idx + ')">Bekijk</button>' +
+        '</div>';
+    }).join("");
+  } else {
+    queueSection.style.display = "none";
+  }
+
+  if (teams.length === 0) {
+    document.getElementById("teams-list").innerHTML = '<p style="color:#aaa;font-size:14px">Nog geen teams ingeschreven.</p>';
+    return;
+  }
+
+  document.getElementById("teams-list").innerHTML = teams.map(function(team) {
+    var approved = approvedCount(team.name);
+    var pct = Math.round(approved / 16 * 100);
+    var teamPending = submissions.filter(function(s) { return s.team_name === team.name && s.status === "submitted"; });
+    var miniCells = TASKS.map(function(_, i) {
+      var s = getStatus(team.name, i);
+      var c = STATUS_COLORS[s];
+      return '<div class="mini-cell" title="' + TASKS[i] + '" style="background:' + c.bg + ';border-color:' + c.border + '"></div>';
+    }).join("");
+    var pendingBtns = teamPending.map(function(s) {
+      return '<button class="pending-btn" onclick="openReview(\'' + s.team_name.replace(/'/g, "\\'") + '\',' + s.task_idx + ')">Beoordeel: opdracht ' + (s.task_idx + 1) + '</button>';
+    }).join("");
+    return '<div class="team-card">' +
+      '<div class="team-card-header">' +
+        '<div><div class="team-name">' + team.name + (hasBingo(team.name) ? ' &#127881; BINGO!' : '') + '</div>' +
+        (team.members && team.members.length ? '<div class="team-members">' + team.members.join(' \u00b7 ') + '</div>' : '') + '</div>' +
+        '<div class="team-score">' + approved + '/16' + (teamPending.length ? ' \u00b7 ' + teamPending.length + ' wachtend' : '') + '</div>' +
+      '</div>' +
+      '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="mini-grid">' + miniCells + '</div>' +
+      (pendingBtns ? '<div class="pending-btns">' + pendingBtns + '</div>' : '') +
+      '</div>';
+  }).join("");
+}
+
+function openReview(team, taskIdx) {
+  var sub = submissions.find(function(s) { return s.team_name === team && s.task_idx === taskIdx; });
+  var teamData = teams.find(function(t) { return t.name === team; });
+  reviewData = { team: team, taskIdx: taskIdx };
+  document.getElementById("review-team").textContent = team;
+  document.getElementById("review-members").textContent = (teamData && teamData.members && teamData.members.length) ? teamData.members.join(" \u00b7 ") : "";
+  document.getElementById("review-task").textContent = TASKS[taskIdx];
+  var photo = document.getElementById("review-photo");
+  var noPhoto = document.getElementById("review-no-photo");
+  if (sub && sub.photo_url) {
+    photo.src = sub.photo_url;
+    photo.style.display = "block";
+    noPhoto.style.display = "none";
+  } else {
+    photo.style.display = "none";
+    noPhoto.style.display = "block";
+  }
+  document.getElementById("review-overlay").classList.add("open");
+}
+
+function closeReview() {
+  document.getElementById("review-overlay").classList.remove("open");
+  reviewData = null;
+}
+
+function moderate(action) {
+  if (!reviewData) return;
+  var team = reviewData.team;
+  var taskIdx = reviewData.taskIdx;
+  sb("submissions?team_name=eq." + encodeURIComponent(team) + "&task_idx=eq." + taskIdx, {
+    method: "PATCH",
+    body: JSON.stringify({ status: action })
+  }).then(function() {
+    submissions = submissions.map(function(s) {
+      return (s.team_name === team && s.task_idx === taskIdx) ? Object.assign({}, s, { status: action }) : s;
+    });
+    render();
+    closeReview();
+    if (action === "approved") toast("Goedgekeurd voor team " + team, "success");
+    else toast("Afgekeurd voor team " + team, "error");
+  }).catch(function() {
+    toast("Er ging iets mis.", "error");
+  });
+}
+</script>
+</body>
+</html>
