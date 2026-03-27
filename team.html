@@ -9,34 +9,23 @@
 body { font-family: system-ui, sans-serif; background: #f0f0f0; color: #1a1a1a; min-height: 100vh; }
 .screen { display: none; }
 .screen.active { display: block; }
+:root { --mv-red: #e4002b; }
 
-/* MV Colors */
-:root {
-  --mv-red: #e4002b;
-  --mv-dark: #1a1a1a;
-  --mv-light: #fff;
-  --mv-gray: #f0f0f0;
-  --mv-border: #ddd;
-}
-
-.header-bar { background: var(--mv-red); color: #fff; padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
-.header-bar .logo { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-.header-bar .logo span { font-weight: 300; }
+.header-bar { background: var(--mv-red); color: #fff; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
+.logo { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+.logo span { font-weight: 300; }
 
 .center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 60px); padding: 24px 20px; gap: 20px; }
-
 .welcome-box { background: var(--mv-red); color: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 420px; text-align: center; }
 .welcome-box h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
 .welcome-box p { font-size: 14px; opacity: .9; line-height: 1.6; }
-
-.card { background: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 420px; border: 1px solid var(--mv-border); display: flex; flex-direction: column; gap: 16px; }
+.card { background: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 420px; border: 1px solid #ddd; display: flex; flex-direction: column; gap: 16px; }
 label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 6px; }
-input[type=text], textarea { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--mv-border); font-size: 15px; outline: none; background: #fafafa; font-family: inherit; }
+input[type=text], textarea { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid #ddd; font-size: 15px; outline: none; background: #fafafa; font-family: inherit; }
 input:focus, textarea:focus { border-color: var(--mv-red); }
 .btn { padding: 14px 0; border-radius: 10px; border: none; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; }
 .btn-red { background: var(--mv-red); color: #fff; }
 .btn-red:disabled { background: #ccc; color: #999; cursor: default; }
-.btn-gray { background: #eee; color: #555; }
 .members-row { display: flex; gap: 8px; }
 .members-row input { flex: 1; }
 .members-row button { padding: 12px 16px; border-radius: 10px; border: none; background: var(--mv-red); color: #fff; font-size: 18px; font-weight: 700; cursor: pointer; }
@@ -47,9 +36,17 @@ input:focus, textarea:focus { border-color: var(--mv-red); }
 /* Bingo screen */
 #bingo-screen { padding-bottom: 40px; }
 .bingo-header { background: var(--mv-red); color: #fff; padding: 16px 20px 20px; }
-.bingo-header h2 { font-size: 18px; font-weight: 800; }
-.bingo-header .sub { font-size: 13px; opacity: .85; margin-top: 3px; }
-.bingo-header .members { font-size: 12px; opacity: .75; margin-top: 2px; }
+.bingo-header .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+
+/* Team info card */
+.team-info-card { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.team-info-card .team-name-big { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+.team-info-card .members-list { font-size: 13px; opacity: .85; margin-bottom: 10px; }
+.team-info-card .stats-row { display: flex; gap: 10px; }
+.stat-pill { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 6px 14px; text-align: center; flex: 1; }
+.stat-pill .num { font-size: 20px; font-weight: 800; line-height: 1; }
+.stat-pill .lbl { font-size: 11px; opacity: .85; margin-top: 2px; }
+
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 12px; }
 .cell { background: #fff; border: 1.5px solid #ddd; color: #444; border-radius: 8px; padding: 8px 6px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 85px; font-size: 10px; line-height: 1.4; user-select: none; transition: transform .1s; }
 .cell:active { transform: scale(.97); }
@@ -61,7 +58,6 @@ input:focus, textarea:focus { border-color: var(--mv-red); }
 .legend { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 8px; }
 .legend span { font-size: 10px; border-radius: 20px; padding: 2px 8px; border: 1px solid; }
 
-/* Modal */
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); display: none; align-items: flex-end; justify-content: center; z-index: 100; }
 .overlay.open { display: flex; }
 .modal { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 24px 36px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; box-shadow: 0 -8px 40px rgba(0,0,0,0.3); }
@@ -77,9 +73,7 @@ input:focus, textarea:focus { border-color: var(--mv-red); }
 #preview-img { max-width: 100%; max-height: 240px; border-radius: 10px; object-fit: cover; border: 2px solid #e0efe0; display: none; margin-bottom: 16px; width: 100%; }
 .modal-btns { display: flex; gap: 10px; }
 .modal-btns .btn { padding: 14px 0; font-size: 14px; }
-.btn-outline { background: #fff; border: 1.5px solid #ddd !important; color: #555; border-radius: 10px; padding: 14px 16px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
-
-/* Rejected notice */
+.btn-outline { background: #fff; border: 1.5px solid #ddd; color: #555; border-radius: 10px; padding: 14px 16px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
 .rejected-notice { background: #fef0f3; border: 1px solid #f7b3c0; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; color: #a0001f; line-height: 1.5; }
 
 #toast-container { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; align-items: center; z-index: 999; pointer-events: none; width: 90%; }
@@ -87,13 +81,12 @@ input:focus, textarea:focus { border-color: var(--mv-red); }
 .toast.success { background: #1d9e75; }
 .toast.info { background: #534ab7; }
 .toast.error { background: var(--mv-red); }
-@keyframes toastIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+@keyframes toastIn { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
 </style>
 </head>
 <body>
 <div id="toast-container"></div>
 
-<!-- Register -->
 <div id="register-screen" class="screen active">
   <div class="header-bar">
     <div class="logo">Mobile<span>Vikings</span></div>
@@ -116,21 +109,35 @@ input:focus, textarea:focus { border-color: var(--mv-red); }
         </div>
         <div class="tags" id="members-tags"></div>
       </div>
-      <button class="btn btn-red" id="start-btn" onclick="registerTeam()">Start de bingo &#8594;</button>
+      <button class="btn btn-red" onclick="registerTeam()">Start de bingo &#8594;</button>
     </div>
   </div>
 </div>
 
-<!-- Bingo -->
 <div id="bingo-screen" class="screen">
   <div class="bingo-header">
-    <div style="display:flex;align-items:center;justify-content:space-between">
-      <div class="logo" style="font-size:18px;font-weight:800">Mobile<span style="font-weight:300">Vikings</span></div>
+    <div class="top-row">
+      <div class="logo">Mobile<span>Vikings</span></div>
       <button onclick="showLogin()" style="background:rgba(255,255,255,0.2);border:none;color:#fff;padding:6px 12px;border-radius:20px;font-size:12px;cursor:pointer">&#128274; Mod</button>
     </div>
-    <h2 id="team-title" style="margin-top:10px">Team</h2>
-    <p class="members" id="members-display"></p>
-    <p class="sub" id="score-display">0/16 goedgekeurd</p>
+    <div class="team-info-card">
+      <div class="team-name-big" id="team-title-big">Team</div>
+      <div class="members-list" id="members-display"></div>
+      <div class="stats-row">
+        <div class="stat-pill">
+          <div class="num" id="approved-count">0</div>
+          <div class="lbl">Goedgekeurd</div>
+        </div>
+        <div class="stat-pill">
+          <div class="num" id="rank-display">#-</div>
+          <div class="lbl">Positie</div>
+        </div>
+        <div class="stat-pill">
+          <div class="num" id="pending-count">0</div>
+          <div class="lbl">In behandeling</div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="legend">
     <span style="background:#fff;border-color:#ddd;color:#444">Niet gedaan</span>
@@ -141,7 +148,6 @@ input:focus, textarea:focus { border-color: var(--mv-red); }
   <div class="grid" id="bingo-grid"></div>
 </div>
 
-<!-- Upload modal -->
 <div class="overlay" id="upload-overlay">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -151,7 +157,6 @@ input:focus, textarea:focus { border-color: var(--mv-red); }
     </div>
     <div class="task-box" id="modal-task-text"></div>
     <div class="rejected-notice" id="rejected-notice" style="display:none"></div>
-
     <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
       <span class="big">&#128247;</span>
       <span class="title">Tik hier om een foto te kiezen</span>
@@ -159,12 +164,10 @@ input:focus, textarea:focus { border-color: var(--mv-red); }
     </div>
     <input type="file" id="file-input" accept="image/*" style="display:none">
     <img id="preview-img" alt="preview">
-
     <div style="margin-bottom:16px">
       <label>Opmerking <span style="font-weight:400;color:#aaa">(optioneel)</span></label>
       <textarea id="submit-comment" rows="2" placeholder="Voeg een korte toelichting toe..."></textarea>
     </div>
-
     <div class="modal-btns">
       <button class="btn-outline" onclick="closeModal()">Annuleren</button>
       <button class="btn-outline" id="retry-btn" onclick="retryPhoto()" style="display:none">Opnieuw</button>
@@ -177,44 +180,38 @@ input:focus, textarea:focus { border-color: var(--mv-red); }
 var SUPABASE_URL = "https://qlirvunlnxakbtbeeryu.supabase.co";
 var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaXJ2dW5sbnhha2J0YmVlcnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1Mjk5MzIsImV4cCI6MjA5MDEwNTkzMn0.BWW0mvcshycK1pfKupSqSrHcj5H144sZs9kAeOCKNEA";
 var TASKS = [
-  "Maak een groepsselfie op een bijzondere plek",
-  "Vraag iemand buiten het team om een handtekening",
-  "Bouw iets met wat je bij je hebt",
-  "Doe een challenge samen en film het",
-  "Vind een voorwerp dat begint met elke letter van jullie teamnaam",
-  "Maak een menselijke piramide",
-  "Leer 5 woorden in een andere taal van een voorbijganger",
-  "Maak een foto met iemand in een grappig kostuum of hoed",
-  "Bedenk een teamlied en zing het",
-  "Maak een foto waarbij het team een letter vormt met jullie lichamen",
-  "Verzamel 5 handtekeningen van mensen die je niet kent",
-  "Maak een foto met een standbeeld of kunstwerk",
-  "Doe een goede daad en documenteer het",
-  "Maak een panoramafoto van het hele team",
-  "Vind en fotografeer iets blauw, rood en geel",
-  "Recreeer een beroemde foto met het team"
+  "Maak een foto met een Jim kaart",
+  "Speel een arcade game",
+  "Zoek een koffieboon",
+  "Jenever musea",
+  "Maak een foto met het Mobile Vikings logo in een Telenet of Orange winkel",
+  "Laat een buitenlander een mini reclame spot maken voor Mobile Vikings",
+  "Kopieer de houding van een standbeeld",
+  "Kamer in YUP",
+  "Nespresso winkel - what else",
+  "Verzamel 5 euro",
+  "Zoek een drankje met een X-letter en drink het",
+  "Split the G",
+  "Maak een foto met 3 heiligen / koningen",
+  "Zoek iemand die een BV kent",
+  "Zoek iemand die de split kan",
+  "Zoek de kerstman"
 ];
 
-var teamName = "";
-var members = [];
-var submissions = [];
-var selectedTask = null;
-var photoDataUrl = null;
+var teamName = "", members = [], submissions = [], allTeamScores = [];
+var selectedTask = null, photoDataUrl = null;
 
-// Persist team session
 function saveSession() { try { localStorage.setItem("mv_team", JSON.stringify({ teamName: teamName, members: members })); } catch(e) {} }
-function loadSession() { try { var s = localStorage.getItem("mv_team"); if (s) { var d = JSON.parse(s); return d; } } catch(e) {} return null; }
+function loadSession() { try { var s = localStorage.getItem("mv_team"); return s ? JSON.parse(s) : null; } catch(e) { return null; } }
 
 window.addEventListener("load", function() {
   var s = loadSession();
   if (s && s.teamName) {
-    teamName = s.teamName;
-    members = s.members || [];
+    teamName = s.teamName; members = s.members || [];
     showScreen("bingo-screen");
-    document.getElementById("team-title").textContent = "Team: " + teamName;
+    document.getElementById("team-title-big").textContent = teamName;
     document.getElementById("members-display").textContent = members.length ? members.join(" \u00b7 ") : "";
-    loadSubmissions().then(renderGrid);
-    setInterval(function() { loadSubmissions().then(renderGrid); }, 6000);
+    loadAll(); setInterval(loadAll, 6000);
   }
 });
 
@@ -228,9 +225,7 @@ function sb(path, options) {
 }
 
 function toast(msg, type) {
-  var el = document.createElement("div");
-  el.className = "toast " + (type || "success");
-  el.textContent = msg;
+  var el = document.createElement("div"); el.className = "toast " + (type || "success"); el.textContent = msg;
   document.getElementById("toast-container").appendChild(el);
   setTimeout(function() { el.remove(); }, 3500);
 }
@@ -255,9 +250,7 @@ function addMember() {
   var input = document.getElementById("member-input");
   var name = input.value.trim();
   if (!name || members.includes(name)) return;
-  members.push(name);
-  input.value = "";
-  renderTags();
+  members.push(name); input.value = ""; renderTags();
 }
 
 function renderTags() {
@@ -271,50 +264,60 @@ function removeMember(name) { members = members.filter(function(m) { return m !=
 function registerTeam() {
   var name = document.getElementById("team-name-input").value.trim();
   if (!name) return;
-  teamName = name;
-  saveSession();
+  teamName = name; saveSession();
   showScreen("bingo-screen");
-  document.getElementById("team-title").textContent = "Team: " + teamName;
+  document.getElementById("team-title-big").textContent = teamName;
   document.getElementById("members-display").textContent = members.length ? members.join(" \u00b7 ") : "";
   toast("Welkom, team " + teamName + "! \uD83C\uDF89");
   sb("teams", { method: "POST", prefer: "resolution=ignore-duplicates", body: JSON.stringify({ name: teamName, members: members }) }).catch(function() {});
-  loadSubmissions().then(function() { renderGrid(); setInterval(function() { loadSubmissions().then(renderGrid); }, 6000); });
+  loadAll(); setInterval(loadAll, 6000);
 }
 
-function loadSubmissions() {
-  return sb("submissions?team_name=eq." + encodeURIComponent(teamName) + "&select=task_idx,status,reject_comment", { method: "GET" })
-    .then(function(data) { submissions = data || []; }).catch(function() {});
+function loadAll() {
+  Promise.all([
+    sb("submissions?team_name=eq." + encodeURIComponent(teamName) + "&select=task_idx,status,reject_comment", { method: "GET" }),
+    sb("submissions?select=team_name,status", { method: "GET" })
+  ]).then(function(results) {
+    submissions = results[0] || [];
+    computeRank(results[1] || []);
+    renderGrid(); updateStats();
+  }).catch(function() {});
+}
+
+function computeRank(allSubs) {
+  var scores = {};
+  allSubs.forEach(function(s) { if (s.status === "approved") { scores[s.team_name] = (scores[s.team_name] || 0) + 1; } });
+  var myScore = scores[teamName] || 0;
+  var rank = 1;
+  Object.keys(scores).forEach(function(t) { if (t !== teamName && scores[t] > myScore) rank++; });
+  allTeamScores = scores;
+  document.getElementById("rank-display").textContent = "#" + rank;
 }
 
 function getStatus(idx) { var s = submissions.find(function(s) { return s.task_idx === idx; }); return s ? s.status : "pending"; }
-function getRejectComment(idx) { var s = submissions.find(function(s) { return s.task_idx === idx; }); return s ? s.reject_comment || "" : ""; }
+function getRejectComment(idx) { var s = submissions.find(function(s) { return s.task_idx === idx; }); return s ? (s.reject_comment || "") : ""; }
+
+function updateStats() {
+  var approved = TASKS.reduce(function(n, _, i) { return n + (getStatus(i) === "approved" ? 1 : 0); }, 0);
+  var pending = TASKS.reduce(function(n, _, i) { return n + (getStatus(i) === "submitted" ? 1 : 0); }, 0);
+  document.getElementById("approved-count").textContent = approved;
+  document.getElementById("pending-count").textContent = pending;
+}
 
 function renderGrid() {
   var grid = document.getElementById("bingo-grid");
   grid.innerHTML = TASKS.map(function(t, i) {
-    var s = getStatus(i);
-    var rc = getRejectComment(i);
+    var s = getStatus(i); var rc = getRejectComment(i);
     var icon = s === "approved" ? '<span class="icon">&#10003;</span>' : s === "submitted" ? '<span class="icon">&#9203;</span>' : s === "rejected" ? '<span class="icon">&#10007;</span>' : "";
     var comment = (s === "rejected" && rc) ? '<span class="reject-comment">"' + rc + '"</span>' : "";
     var click = s !== "approved" ? 'onclick="openModal(' + i + ')"' : "";
     return '<div class="cell ' + s + '" ' + click + '>' + icon + '<span>' + t + '</span>' + comment + '</div>';
   }).join("");
-  var approved = TASKS.reduce(function(n, _, i) { return n + (getStatus(i) === "approved" ? 1 : 0); }, 0);
-  document.getElementById("score-display").textContent = approved + "/16 goedgekeurd" + (checkBingo() ? " \uD83C\uDF89 BINGO!" : "");
-}
-
-function checkBingo() {
-  function a(i) { return getStatus(i) === "approved"; }
-  for (var r = 0; r < 4; r++) { if ([0,1,2,3].every(function(c) { return a(r*4+c); })) return true; }
-  for (var c = 0; c < 4; c++) { if ([0,1,2,3].every(function(r) { return a(r*4+c); })) return true; }
-  if ([0,1,2,3].every(function(i) { return a(i*5); })) return true;
-  if ([0,1,2,3].every(function(i) { return a(i*4+(3-i)); })) return true;
-  return false;
+  updateStats();
 }
 
 function openModal(idx) {
-  selectedTask = idx;
-  photoDataUrl = null;
+  selectedTask = idx; photoDataUrl = null;
   document.getElementById("modal-task-text").textContent = TASKS[idx];
   document.getElementById("preview-img").style.display = "none";
   document.getElementById("upload-zone").style.display = "flex";
@@ -324,7 +327,7 @@ function openModal(idx) {
   document.getElementById("submit-comment").value = "";
   var rc = getRejectComment(idx);
   var notice = document.getElementById("rejected-notice");
-  if (getStatus(idx) === "rejected" && rc) { notice.textContent = "\uD83D\uDCAC Feedback moderator: \"" + rc + "\""; notice.style.display = "block"; }
+  if (getStatus(idx) === "rejected" && rc) { notice.textContent = "\uD83D\uDCAC Feedback: \"" + rc + "\""; notice.style.display = "block"; }
   else { notice.style.display = "none"; }
   document.getElementById("upload-overlay").classList.add("open");
 }
@@ -341,15 +344,13 @@ function retryPhoto() {
 }
 
 function onFileSelected(e) {
-  var file = e.target.files[0];
-  if (!file) return;
+  var file = e.target.files[0]; if (!file) return;
   var reader = new FileReader();
   reader.onload = function(ev) {
     resizeImage(ev.target.result, 800).then(function(resized) {
       photoDataUrl = resized;
       var img = document.getElementById("preview-img");
-      img.src = resized;
-      img.style.display = "block";
+      img.src = resized; img.style.display = "block";
       document.getElementById("upload-zone").style.display = "none";
       document.getElementById("retry-btn").style.display = "inline-block";
       document.getElementById("submit-btn").disabled = false;
@@ -382,8 +383,8 @@ function submitPhoto() {
   sb("submissions", {
     method: "POST", prefer: "resolution=merge-duplicates",
     body: JSON.stringify({ team_name: teamName, task_idx: selectedTask, status: "submitted", photo_url: photoDataUrl, team_comment: comment, reject_comment: null })
-  }).then(function() { return loadSubmissions(); })
-  .then(function() { renderGrid(); closeModal(); toast("Foto ingestuurd! Wacht op goedkeuring.", "info"); })
+  }).then(function() { return loadAll(); })
+  .then(function() { closeModal(); toast("Foto ingestuurd! Wacht op goedkeuring.", "info"); })
   .catch(function() { toast("Er ging iets mis, probeer opnieuw.", "error"); btn.disabled = false; btn.textContent = "Insturen \u2192"; });
 }
 </script>
