@@ -10,11 +10,9 @@ body { font-family: system-ui, sans-serif; background: #f0f0f0; color: #1a1a1a; 
 :root { --mv-red: #e4002b; }
 .screen { display: none; }
 .screen.active { display: block; }
-.header-bar { background: var(--mv-red); color: #fff; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
-.logo { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+.header-bar { background: var(--mv-red); color: #fff; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+.logo { font-size: 20px; font-weight: 800; }
 .logo span { font-weight: 300; }
-
-/* Login */
 .center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 32px 20px; gap: 20px; }
 .login-card { background: #fff; border-radius: 16px; padding: 28px; width: 100%; max-width: 360px; border: 1px solid #ddd; display: flex; flex-direction: column; gap: 14px; }
 input[type=password], input[type=text], textarea { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid #ddd; font-size: 15px; outline: none; background: #fafafa; font-family: inherit; }
@@ -25,37 +23,51 @@ input:focus, textarea:focus { border-color: var(--mv-red); }
 .btn-reject { background: #e24b4a; color: #fff; }
 .error-text { color: #a0001f; font-size: 13px; display: none; }
 .remember-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; }
-.remember-row input { width: auto; padding: 0; }
+.remember-row input[type=checkbox] { width: auto; padding: 0; }
 
-/* Dashboard */
-#dashboard { padding: 20px 16px; max-width: 760px; margin: 0 auto; }
-.dash-stats { font-size: 13px; color: #fff; opacity: .85; margin-top: 3px; }
+#dashboard { padding: 0 0 40px; max-width: 800px; margin: 0 auto; }
+.dash-header-inner { padding: 14px 20px; }
+.dash-stats { font-size: 13px; color: rgba(255,255,255,0.85); margin-top: 3px; }
 .refresh-btn { padding: 7px 14px; border-radius: 20px; border: 1.5px solid rgba(255,255,255,0.5); background: none; color: #fff; cursor: pointer; font-size: 13px; font-weight: 600; }
 h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
-.section { margin-bottom: 28px; }
+.section { padding: 16px 20px; }
+
+/* Leaderboard */
+.leaderboard { display: flex; flex-direction: column; gap: 8px; }
+.lb-item { background: #fff; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; border: 2px solid transparent; transition: border-color .2s; }
+.lb-item.first  { border-color: #FFD700; background: #fffdf0; }
+.lb-item.second { border-color: #C0C0C0; background: #fafafa; }
+.lb-item.third  { border-color: #CD7F32; background: #fdf8f4; }
+.lb-rank { font-size: 22px; width: 36px; text-align: center; flex-shrink: 0; }
+.lb-info { flex: 1; min-width: 0; }
+.lb-name { font-size: 15px; font-weight: 700; }
+.lb-members { font-size: 12px; color: #888; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-right { text-align: right; flex-shrink: 0; }
+.lb-score { font-size: 22px; font-weight: 800; color: var(--mv-red); line-height: 1; }
+.lb-score-lbl { font-size: 11px; color: #888; }
+.lb-bar-wrap { margin-top: 8px; background: #eee; border-radius: 4px; height: 5px; overflow: hidden; }
+.lb-bar { height: 100%; background: var(--mv-red); border-radius: 4px; transition: width .5s; }
+.lb-pending { font-size: 11px; color: #ef9f27; font-weight: 600; margin-top: 3px; }
 
 /* Queue */
 .queue-item { background: #fff; border: 1px solid #f7b3c0; border-left: 4px solid var(--mv-red); border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
 .queue-item img { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
-.queue-item .info { flex: 1; min-width: 0; }
-.queue-item .info .team { font-weight: 700; font-size: 14px; color: #1a1a1a; }
+.queue-item .info .team { font-weight: 700; font-size: 14px; }
 .queue-item .info .task { font-size: 12px; color: #666; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px; }
 .queue-item .info .comment { font-size: 11px; color: #888; font-style: italic; margin-top: 3px; }
 .bekijk-btn { padding: 8px 16px; border-radius: 8px; border: none; background: var(--mv-red); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
 
-/* Team cards */
+/* Team detail cards */
 .team-card { background: #fff; border: 1px solid #ddd; border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
 .team-card-header { padding: 14px 16px 10px; display: flex; align-items: flex-start; justify-content: space-between; }
 .team-name { font-weight: 700; font-size: 15px; }
-.team-members { font-size: 12px; color: #888; margin-top: 2px; }
-.team-score { font-size: 13px; color: #666; flex-shrink: 0; margin-left: 12px; text-align: right; }
-.progress-bar { margin: 0 16px 12px; background: #eee; border-radius: 4px; height: 6px; overflow: hidden; }
+.team-members-txt { font-size: 12px; color: #888; margin-top: 2px; }
+.team-score-badge { background: var(--mv-red); color: #fff; border-radius: 20px; padding: 4px 12px; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-left: 12px; }
+.progress-bar { margin: 0 16px 10px; background: #eee; border-radius: 4px; height: 6px; overflow: hidden; }
 .progress-fill { height: 100%; background: var(--mv-red); border-radius: 4px; }
-
-/* Task grid in team card */
 .task-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 0 16px 14px; }
 .task-cell { border-radius: 6px; padding: 7px 6px; font-size: 10px; line-height: 1.35; text-align: center; border: 1px solid; }
-.task-cell.pending  { background: #f8f7f4; border-color: #ddd; color: #666; }
+.task-cell.pending   { background: #f8f7f4; border-color: #ddd; color: #666; }
 .task-cell.submitted { background: #faeeda; border-color: #ef9f27; color: #633806; cursor: pointer; }
 .task-cell.approved  { background: #eaf3de; border-color: #639922; color: #27500a; }
 .task-cell.rejected  { background: #fef0f3; border-color: var(--mv-red); color: #a0001f; }
@@ -67,7 +79,7 @@ h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
 .modal { background: #fff; border-radius: 20px; padding: 28px; width: 100%; max-width: 440px; max-height: 90vh; overflow-y: auto; box-shadow: 0 32px 80px rgba(0,0,0,0.6); }
 .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
 .modal-header h3 { font-size: 17px; font-weight: 700; color: #1a1a1a; margin: 0; }
-.close-btn { background: #f0f0f0; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 16px; color: #444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.close-btn { background: #f0f0f0; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 16px; color: #444; display: flex; align-items: center; justify-content: center; }
 .info-box { background: #f5f5f5; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; }
 .info-box .lbl { font-size: 11px; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
 .info-box .val { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-top: 2px; }
@@ -75,7 +87,7 @@ h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
 .info-box .sub { font-size: 12px; color: #888; margin-top: 3px; }
 .modal-photo { width: 100%; max-height: 300px; object-fit: contain; border-radius: 10px; margin-bottom: 16px; border: 1px solid #eee; display: none; }
 .no-photo { text-align: center; padding: 16px 0; color: #aaa; font-size: 13px; margin-bottom: 16px; display: none; }
-.reject-input { margin-bottom: 16px; }
+.reject-input { margin-bottom: 16px; display: none; }
 .reject-input label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 6px; }
 .modal-btns { display: flex; gap: 10px; }
 .modal-btns button { flex: 1; padding: 13px 0; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; border: none; }
@@ -86,6 +98,13 @@ h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
 .toast.info { background: #534ab7; }
 .toast.error { background: var(--mv-red); }
 @keyframes toastIn { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
+
+/* Tabs */
+.tabs { display: flex; background: #fff; border-bottom: 2px solid #eee; padding: 0 20px; }
+.tab { padding: 12px 16px; font-size: 14px; font-weight: 600; color: #888; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+.tab.active { color: var(--mv-red); border-bottom-color: var(--mv-red); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 </style>
 </head>
 <body>
@@ -121,13 +140,29 @@ h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
     </div>
     <button class="refresh-btn" id="refresh-btn">&#8635; Refresh</button>
   </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('leaderboard')">&#127942; Leaderboard</div>
+    <div class="tab" id="queue-tab" onclick="switchTab('queue')">&#9203; Beoordelen</div>
+    <div class="tab" onclick="switchTab('teams')">&#128202; Teams</div>
+  </div>
+
   <div id="dashboard">
-    <div class="section" id="queue-section" style="display:none;margin-top:20px">
-      <h3 style="color:#a0001f" id="queue-title">&#9203; Wacht op beoordeling</h3>
+    <!-- Leaderboard tab -->
+    <div class="tab-content active section" id="tab-leaderboard">
+      <div class="leaderboard" id="leaderboard-list">
+        <p style="color:#aaa;font-size:14px">Laden...</p>
+      </div>
+    </div>
+
+    <!-- Queue tab -->
+    <div class="tab-content section" id="tab-queue">
+      <div id="queue-list-empty" style="color:#aaa;font-size:14px;padding:20px 0">Geen ingediende opdrachten.</div>
       <div id="queue-list"></div>
     </div>
-    <div class="section" style="margin-top:20px">
-      <h3>&#128202; Teamoverzicht</h3>
+
+    <!-- Teams tab -->
+    <div class="tab-content section" id="tab-teams">
       <div id="teams-list"><p style="color:#aaa;font-size:14px">Laden...</p></div>
     </div>
   </div>
@@ -150,13 +185,13 @@ h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
       <div class="val2" id="review-task"></div>
     </div>
     <div class="info-box" id="review-comment-box" style="margin-bottom:14px;display:none">
-      <div class="lbl">Opmerking van het team</div>
+      <div class="lbl">Opmerking team</div>
       <div class="val2" id="review-team-comment"></div>
     </div>
     <img id="review-photo" class="modal-photo" alt="bewijs">
     <div class="no-photo" id="review-no-photo">Geen foto beschikbaar</div>
-    <div class="reject-input" id="reject-input" style="display:none">
-      <label>Reden voor afkeuring (wordt getoond aan het team)</label>
+    <div class="reject-input" id="reject-input">
+      <label>Reden voor afkeuring (zichtbaar voor het team)</label>
       <textarea id="reject-comment" rows="2" placeholder="bv. Foto is niet duidelijk genoeg..."></textarea>
     </div>
     <div class="modal-btns" id="modal-action-btns">
@@ -175,35 +210,28 @@ var SUPABASE_URL = "https://qlirvunlnxakbtbeeryu.supabase.co";
 var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaXJ2dW5sbnhha2J0YmVlcnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1Mjk5MzIsImV4cCI6MjA5MDEwNTkzMn0.BWW0mvcshycK1pfKupSqSrHcj5H144sZs9kAeOCKNEA";
 var MOD_CODE = "1234";
 var TASKS = [
-  "Maak een groepsselfie op een bijzondere plek",
-  "Vraag iemand buiten het team om een handtekening",
-  "Bouw iets met wat je bij je hebt",
-  "Doe een challenge samen en film het",
-  "Vind een voorwerp dat begint met elke letter van jullie teamnaam",
-  "Maak een menselijke piramide",
-  "Leer 5 woorden in een andere taal van een voorbijganger",
-  "Maak een foto met iemand in een grappig kostuum of hoed",
-  "Bedenk een teamlied en zing het",
-  "Maak een foto waarbij het team een letter vormt met jullie lichamen",
-  "Verzamel 5 handtekeningen van mensen die je niet kent",
-  "Maak een foto met een standbeeld of kunstwerk",
-  "Doe een goede daad en documenteer het",
-  "Maak een panoramafoto van het hele team",
-  "Vind en fotografeer iets blauw, rood en geel",
-  "Recreeer een beroemde foto met het team"
+  "Maak een foto met een Jim kaart",
+  "Speel een arcade game",
+  "Zoek een koffieboon",
+  "Jenever musea",
+  "Maak een foto met het Mobile Vikings logo in een Telenet of Orange winkel",
+  "Laat een buitenlander een mini reclame spot maken voor Mobile Vikings",
+  "Kopieer de houding van een standbeeld",
+  "Kamer in YUP",
+  "Nespresso winkel - what else",
+  "Verzamel 5 euro",
+  "Zoek een drankje met een X-letter en drink het",
+  "Split the G",
+  "Maak een foto met 3 heiligen / koningen",
+  "Zoek iemand die een BV kent",
+  "Zoek iemand die de split kan",
+  "Zoek de kerstman"
 ];
-var STATUS_COLORS = {
-  pending:   { bg:"#f8f7f4", border:"#ddd" },
-  submitted: { bg:"#faeeda", border:"#ef9f27" },
-  approved:  { bg:"#eaf3de", border:"#639922" },
-  rejected:  { bg:"#fef0f3", border:"#e4002b" }
-};
-var teams = [], submissions = [], reviewData = null;
 
-// Persist login
+var teams = [], submissions = [], reviewData = null, activeTab = "leaderboard";
+
 window.addEventListener("load", function() {
-  var saved = localStorage.getItem("mv_mod_auth");
-  if (saved === "1") { enterDashboard(); }
+  if (localStorage.getItem("mv_mod_auth") === "1") { enterDashboard(); }
 });
 
 function sb(path, options) {
@@ -226,14 +254,21 @@ function showScreen(id) {
   document.getElementById(id).classList.add("active");
 }
 
+function switchTab(name) {
+  activeTab = name;
+  document.querySelectorAll(".tab").forEach(function(t) { t.classList.remove("active"); });
+  document.querySelectorAll(".tab-content").forEach(function(t) { t.classList.remove("active"); });
+  event.target.classList.add("active");
+  document.getElementById("tab-" + name).classList.add("active");
+}
+
 function login() {
   var code = document.getElementById("code-input").value;
-  var err = document.getElementById("code-error");
   if (code === MOD_CODE) {
-    err.style.display = "none";
+    document.getElementById("code-error").style.display = "none";
     if (document.getElementById("remember-me").checked) { localStorage.setItem("mv_mod_auth", "1"); }
     enterDashboard();
-  } else { err.style.display = "block"; }
+  } else { document.getElementById("code-error").style.display = "block"; }
 }
 
 function enterDashboard() {
@@ -269,12 +304,16 @@ function loadAll() {
   Promise.all([
     sb("teams?select=name,members&order=created_at.asc"),
     sb("submissions?select=team_name,task_idx,status,photo_url,team_comment,reject_comment&order=created_at.asc")
-  ]).then(function(r) { teams = r[0] || []; submissions = r[1] || []; render(); })
-  .catch(function() { toast("Laden mislukt", "error"); });
+  ]).then(function(r) {
+    teams = r[0] || []; submissions = r[1] || [];
+    render();
+  }).catch(function() { toast("Laden mislukt", "error"); });
 }
 
 function getStatus(team, idx) { var s = submissions.find(function(s) { return s.team_name === team && s.task_idx === idx; }); return s ? s.status : "pending"; }
-function approvedCount(team) { var n = 0; for (var i = 0; i < TASKS.length; i++) { if (getStatus(team, i) === "approved") n++; } return n; }
+function approvedCount(team) { return submissions.filter(function(s) { return s.team_name === team && s.status === "approved"; }).length; }
+function pendingCount(team) { return submissions.filter(function(s) { return s.team_name === team && s.status === "submitted"; }).length; }
+
 function hasBingo(team) {
   function a(i) { return getStatus(team, i) === "approved"; }
   for (var r = 0; r < 4; r++) { if ([0,1,2,3].every(function(c) { return a(r*4+c); })) return true; }
@@ -289,37 +328,73 @@ function render() {
   var totalApproved = teams.reduce(function(n, t) { return n + approvedCount(t.name); }, 0);
   document.getElementById("dash-stats").textContent = teams.length + " teams \u00b7 " + totalApproved + " goedgekeurd \u00b7 " + pending.length + " wachtend";
 
-  var qs = document.getElementById("queue-section");
-  if (pending.length > 0) {
-    qs.style.display = "block";
-    document.getElementById("queue-title").textContent = "\u23F3 Wacht op beoordeling (" + pending.length + ")";
-    document.getElementById("queue-list").innerHTML = pending.map(function(s) {
-      var tc = s.team_comment ? '<div class="comment">\uD83D\uDCAC "' + s.team_comment + '"</div>' : "";
-      return '<div class="queue-item">' +
-        (s.photo_url ? '<img src="' + s.photo_url + '" alt="">' : '') +
-        '<div class="info"><div class="team">Team: ' + s.team_name + '</div><span class="task">' + TASKS[s.task_idx] + '</span>' + tc + '</div>' +
-        '<button class="bekijk-btn" onclick="openReview(\'' + s.team_name.replace(/'/g, "\\'") + '\',' + s.task_idx + ')">Bekijk</button>' +
-        '</div>';
-    }).join("");
-  } else { qs.style.display = "none"; }
+  // Update queue tab badge
+  var qTab = document.getElementById("queue-tab");
+  qTab.textContent = pending.length > 0 ? "\u23F3 Beoordelen (" + pending.length + ")" : "\u23F3 Beoordelen";
 
+  renderLeaderboard();
+  renderQueue(pending);
+  renderTeams();
+}
+
+function renderLeaderboard() {
+  if (teams.length === 0) { document.getElementById("leaderboard-list").innerHTML = '<p style="color:#aaa;font-size:14px">Nog geen teams ingeschreven.</p>'; return; }
+  var maxScore = Math.max.apply(null, teams.map(function(t) { return approvedCount(t.name) || 0; })) || 1;
+  var sorted = teams.slice().sort(function(a, b) { return approvedCount(b.name) - approvedCount(a.name); });
+  var medals = ["\uD83E\uDD47", "\uD83E\uDD48", "\uD83E\uDD49"];
+  document.getElementById("leaderboard-list").innerHTML = sorted.map(function(team, i) {
+    var score = approvedCount(team.name);
+    var pct = Math.round(score / 16 * 100);
+    var barPct = Math.round(score / maxScore * 100);
+    var pc = pendingCount(team.name);
+    var cls = i === 0 ? "first" : i === 1 ? "second" : i === 2 ? "third" : "";
+    var rank = i < 3 ? medals[i] : (i + 1) + ".";
+    var bingo = hasBingo(team.name) ? ' <span style="font-size:14px">\uD83C\uDF89</span>' : "";
+    return '<div class="lb-item ' + cls + '">' +
+      '<div class="lb-rank">' + rank + '</div>' +
+      '<div class="lb-info">' +
+        '<div class="lb-name">' + team.name + bingo + '</div>' +
+        (team.members && team.members.length ? '<div class="lb-members">' + team.members.join(" \u00b7 ") + '</div>' : '') +
+        '<div class="lb-bar-wrap"><div class="lb-bar" style="width:' + barPct + '%"></div></div>' +
+        (pc > 0 ? '<div class="lb-pending">\u23F3 ' + pc + ' wacht op beoordeling</div>' : '') +
+      '</div>' +
+      '<div class="lb-right"><div class="lb-score">' + score + '</div><div class="lb-score-lbl">/ 16</div></div>' +
+      '</div>';
+  }).join("");
+}
+
+function renderQueue(pending) {
+  var empty = document.getElementById("queue-list-empty");
+  var list = document.getElementById("queue-list");
+  if (pending.length === 0) { empty.style.display = "block"; list.innerHTML = ""; return; }
+  empty.style.display = "none";
+  list.innerHTML = pending.map(function(s) {
+    var tc = s.team_comment ? '<div class="comment">\uD83D\uDCAC "' + s.team_comment + '"</div>' : "";
+    return '<div class="queue-item">' +
+      (s.photo_url ? '<img src="' + s.photo_url + '" alt="">' : '<div style="width:56px;height:56px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">\uD83D\uDCF8</div>') +
+      '<div class="info"><div class="team">Team: ' + s.team_name + '</div><span class="task">' + TASKS[s.task_idx] + '</span>' + tc + '</div>' +
+      '<button class="bekijk-btn" onclick="openReview(\'' + s.team_name.replace(/'/g, "\\'") + '\',' + s.task_idx + ')">Bekijk</button>' +
+      '</div>';
+  }).join("");
+}
+
+function renderTeams() {
   if (teams.length === 0) { document.getElementById("teams-list").innerHTML = '<p style="color:#aaa;font-size:14px">Nog geen teams ingeschreven.</p>'; return; }
-
   document.getElementById("teams-list").innerHTML = teams.map(function(team) {
     var approved = approvedCount(team.name);
     var pct = Math.round(approved / 16 * 100);
-    var teamPending = submissions.filter(function(s) { return s.team_name === team.name && s.status === "submitted"; });
+    var pc = pendingCount(team.name);
     var taskCells = TASKS.map(function(task, i) {
       var s = getStatus(team.name, i);
       var icon = s === "approved" ? "\u2713 " : s === "submitted" ? "\u23F3 " : s === "rejected" ? "\u2717 " : "";
-      var clickable = s === "submitted" ? 'style="cursor:pointer" onclick="openReview(\'' + team.name.replace(/'/g, "\\'") + '\',' + i + ')"' : "";
-      return '<div class="task-cell ' + s + '" ' + clickable + '><span class="cell-icon">' + icon + '</span>' + task + '</div>';
+      var click = s === "submitted" ? 'style="cursor:pointer" onclick="openReview(\'' + team.name.replace(/'/g, "\\'") + '\',' + i + ')"' : "";
+      return '<div class="task-cell ' + s + '" ' + click + '><span class="cell-icon">' + icon + '</span>' + task + '</div>';
     }).join("");
     return '<div class="team-card">' +
       '<div class="team-card-header">' +
         '<div><div class="team-name">' + team.name + (hasBingo(team.name) ? ' \uD83C\uDF89' : '') + '</div>' +
-        (team.members && team.members.length ? '<div class="team-members">' + team.members.join(' \u00b7 ') + '</div>' : '') + '</div>' +
-        '<div class="team-score">' + approved + '/16' + (teamPending.length ? '<br><span style="color:var(--mv-red)">' + teamPending.length + ' wachtend</span>' : '') + '</div>' +
+        (team.members && team.members.length ? '<div class="team-members-txt">' + team.members.join(' \u00b7 ') + '</div>' : '') + '</div>' +
+        '<div><div class="team-score-badge">' + approved + '/16</div>' + (pc > 0 ? '<div style="font-size:11px;color:#ef9f27;text-align:right;margin-top:4px">' + pc + ' wachtend</div>' : '') + '</div>' +
       '</div>' +
       '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
       '<div class="task-grid">' + taskCells + '</div>' +
@@ -337,14 +412,10 @@ function openReview(team, taskIdx) {
   var tcBox = document.getElementById("review-comment-box");
   if (sub && sub.team_comment) { document.getElementById("review-team-comment").textContent = sub.team_comment; tcBox.style.display = "block"; }
   else { tcBox.style.display = "none"; }
-  var photo = document.getElementById("review-photo");
-  var noPhoto = document.getElementById("review-no-photo");
+  var photo = document.getElementById("review-photo"), noPhoto = document.getElementById("review-no-photo");
   if (sub && sub.photo_url) { photo.src = sub.photo_url; photo.style.display = "block"; noPhoto.style.display = "none"; }
   else { photo.style.display = "none"; noPhoto.style.display = "block"; }
-  document.getElementById("reject-input").style.display = "none";
-  document.getElementById("modal-action-btns").style.display = "flex";
-  document.getElementById("confirm-reject-btns").style.display = "none";
-  document.getElementById("reject-comment").value = "";
+  cancelReject();
   document.getElementById("review-overlay").classList.add("open");
 }
 
@@ -353,13 +424,12 @@ function closeReview() { document.getElementById("review-overlay").classList.rem
 function moderate(action) {
   if (!reviewData) return;
   var team = reviewData.team, taskIdx = reviewData.taskIdx;
-  var rejectComment = action === "rejected" ? document.getElementById("reject-comment").value.trim() : null;
+  var rc = action === "rejected" ? document.getElementById("reject-comment").value.trim() : null;
   sb("submissions?team_name=eq." + encodeURIComponent(team) + "&task_idx=eq." + taskIdx, {
-    method: "PATCH",
-    body: JSON.stringify({ status: action, reject_comment: rejectComment })
+    method: "PATCH", body: JSON.stringify({ status: action, reject_comment: rc })
   }).then(function() {
     submissions = submissions.map(function(s) {
-      return (s.team_name === team && s.task_idx === taskIdx) ? Object.assign({}, s, { status: action, reject_comment: rejectComment }) : s;
+      return (s.team_name === team && s.task_idx === taskIdx) ? Object.assign({}, s, { status: action, reject_comment: rc }) : s;
     });
     render(); closeReview();
     if (action === "approved") toast("Goedgekeurd voor team " + team, "success");
